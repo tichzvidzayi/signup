@@ -1,5 +1,6 @@
 import { useState } from "react";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 function Register() {
     const [name, setName] = useState("");
@@ -8,6 +9,16 @@ function Register() {
     const [emailErr, setEmailErr] = useState("");
     const [pwdErr, setPwdErr] = useState("");
     const [pwdStrength, setStrength] = useState("");
+
+
+    const [cred, setCredentials] = useState(
+        {
+            Name: name,
+            Email: email,
+            Password: password
+        }
+    )
+
 
     const handleNameChange = (e) => {
         setName(e.target.value);
@@ -39,11 +50,19 @@ function Register() {
         }
     };
 
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post('http://localhost:8088/register', cred)
+            .then(res => console.log("aaa"))
+            .then(err => console.log(err));
+
+    }
     return (
         <div className="flex justify-center items-center h-screen bg-gradient-to-br from-blue-500 to-purple-500">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96">
                 <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Register</h2>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="mb-6">
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                         <input
@@ -82,7 +101,7 @@ function Register() {
                     </div>
                     <button type="submit" className="bg-blue-500 text-white px-6 py-3 w-full rounded-md hover:bg-blue-600 transition-colors">Register</button>
 
-                    <Link to = "/signin" className=" text-xs font-bold px-6 py-3" > Already have an account? SignIn </Link>
+                    <Link to="/signin" className=" text-xs font-bold px-6 py-3" > Already have an account? SignIn </Link>
                 </form>
             </div>
         </div>

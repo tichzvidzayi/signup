@@ -1,5 +1,5 @@
-import  { useState } from "react";
-import {Link, useNavigate} from 'react-router-dom';
+import { useState } from "react";
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 function SignIn() {
@@ -8,31 +8,31 @@ function SignIn() {
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    
+    const navigate = useNavigate();
 
-   const handleSubmit = (e) => {
- e.preventDefault();
- axios.post('http://localhost:8088/signin', {email,password})
-    .then (res => {
-        console.log(res.data.message);
-        console.log(res.status);
-        if(res.status == 200)
-            {
-             //  navigate('/login')
-            }
-            else{
-                alert("Couldn't login " + res.data.message);
-            }
-    })
-    .then ( err => console.log(err));
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post('http://localhost:8088/signin', { email, password })
+            .then(res => {
+                console.log(res.data.message);
+                console.log(res.status);
+                if (res.status == 200) {
+                    alert("Login successful! ");
+                    navigate('/home', { user: email });   
+                }
+                else {
+                    alert("Ooops Login failed, try again." + res.data.message);
+                }
+            })
+            .then(err => console.log(err));
 
 
-   }
+    }
 
     return (
         <div className="flex justify-center items-center h-screen bg-gradient-to-br from-blue-500 to-purple-500">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-                <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">SignIn</h2>
+                <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Apollo SignIn</h2>
                 <form onSubmit={handleSubmit}>
 
                     <div className="mb-6">
@@ -57,10 +57,10 @@ function SignIn() {
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                         />
-                      
+
                     </div>
                     <button type="submit" className="bg-blue-500 text-white px-6 py-3 w-full rounded-md hover:bg-blue-600 transition-colors">SignIn</button>
-                    <Link to = "/register" className=" text-xs font-bold px-6 py-3" >New user? Register new account </Link>
+                    <Link to="/register" className=" text-xs font-bold px-6 py-3" >New user? Register new account </Link>
                 </form>
             </div>
         </div>

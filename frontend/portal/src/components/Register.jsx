@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Register() {
@@ -9,7 +9,7 @@ function Register() {
     const [emailErr, setEmailErr] = useState("");
     const [pwdErr, setPwdErr] = useState("");
     const [pwdStrength, setStrength] = useState("");
-
+    const navigate = useNavigate();
 
     const handleNameChange = (e) => {
         setName(e.target.value);
@@ -18,8 +18,6 @@ function Register() {
     const handleEmailChange = (e) => {
         const newEmail = e.target.value;
         setEmail(newEmail);
-
-        // Email validation
         if (!/^\S+@\S+\.\S+$/.test(newEmail)) {
             setEmailErr("Please enter a valid email address.");
         } else {
@@ -44,15 +42,33 @@ function Register() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8088/register', {name,email,password})
-            .then(res => console.log("aaa"))
-            .then(err => console.log(err));
+        axios.post('http://localhost:8088/register', { name, email, password })
+            .then(
+                res => {
+
+                    if (res.status == 201) {
+                        alert("User was successfully registered")
+                        navigate('/signin');
+                    }
+                    else if (res.status == 400) {
+                        alert("User already exists, Signin.");
+                    }
+                }
+
+            )
+            .catch(
+                res => {
+                    alert(res.response.data.error);
+
+                }
+
+            );
 
     }
     return (
         <div className="flex justify-center items-center h-screen bg-gradient-to-br from-blue-500 to-purple-500">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-                <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Register</h2>
+                <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Apollo Register</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-6">
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>

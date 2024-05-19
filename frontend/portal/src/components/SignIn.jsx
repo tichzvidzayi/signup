@@ -25,8 +25,6 @@ function SignIn() {
                 }
             })
             .then(err => console.log(err));
-
-
     }
 
     return (

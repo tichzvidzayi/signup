@@ -11,15 +11,6 @@ function Register() {
     const [pwdStrength, setStrength] = useState("");
 
 
-    const [cred, setCredentials] = useState(
-        {
-            Name: name,
-            Email: email,
-            Password: password
-        }
-    )
-
-
     const handleNameChange = (e) => {
         setName(e.target.value);
     };
@@ -53,7 +44,7 @@ function Register() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8088/register', cred)
+        axios.post('http://localhost:8088/register', {name,email,password})
             .then(res => console.log("aaa"))
             .then(err => console.log(err));
 

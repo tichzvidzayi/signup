@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 const corsOptions = {
   origin: "http://localhost:3000",
-  credentials: true, //access-control-allow-credentials:true
+  credentials: true,
   optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
@@ -22,7 +22,7 @@ const sequelize = new Sequelize(
   "mysql://admin:admin@localhost:3306/apollousers"
 );
 
-// Define User model
+// User model
 const User = sequelize.define("User", {
   name: {
     type: DataTypes.STRING,
@@ -79,7 +79,6 @@ app.post("/signin", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
 
 sequelize.sync().then(() => {
   console.log("Models synced with database");
